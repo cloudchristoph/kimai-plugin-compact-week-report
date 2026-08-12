@@ -6,6 +6,8 @@ A [Kimai](https://www.kimai.org) plugin that adds a compact weekly report: **one
 
 Built to make transferring hours into external systems (e.g. ServiceNow time tracking) as easy as possible.
 
+![Screenshot](screenshot.png)
+
 ## Features
 
 - New report under *Reporting → Compact week (customer – project)*
@@ -27,7 +29,7 @@ This plugin is compatible with the following Kimai releases:
 
 | Bundle version | Minimum Kimai version |
 |----------------|-----------------------|
-| 1.0            | 2.61.0                |
+| 0.1            | 2.61.0                |
 
 You find the most notable changes between the versions in the file [CHANGELOG.md](CHANGELOG.md).
 

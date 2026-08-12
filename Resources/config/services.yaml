@@ -8,6 +8,8 @@ services:
         resource: '../../*'
         exclude:
             - '../../Resources/'
+            - '../../vendor/'
+            - '../../.github/'
 
     KimaiPlugin\CompactWeekBundle\Controller\:
         resource: '../../Controller'

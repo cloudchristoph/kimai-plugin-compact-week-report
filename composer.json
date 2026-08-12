@@ -3,7 +3,7 @@
     "description": "Kimai plugin with a compact weekly report: one row per customer/project without activity breakdown, with rounding and decimal display for easy transfer into external time tracking systems",
     "homepage": "https://cloudchristoph.com",
     "type": "kimai-plugin",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "keywords": [
         "kimai",
         "kimai-plugin"
