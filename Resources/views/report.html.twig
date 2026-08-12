@@ -1,0 +1,117 @@
+{% extends 'reporting/layout.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block report %}
+    {% set nav_params = {'decimal': decimal ? '1' : '0', 'rounding': rounding} %}
+    <div class="mb-3 d-flex align-items-center justify-content-between">
+        <div class="btn-group" role="group">
+            <a class="btn btn-icon" href="{{ path('report_compact_week', nav_params|merge({'date': previous|date('Y-m-d')})) }}" title="{{ previous|date_short }}">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            <a class="btn" href="{{ path('report_compact_week', nav_params) }}">
+                {{ 'compact_week.this_week'|trans({}, 'reporting') }}
+            </a>
+            <a class="btn btn-icon" href="{{ path('report_compact_week', nav_params|merge({'date': next|date('Y-m-d')})) }}" title="{{ next|date_short }}">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+        <div class="text-center fw-bold">
+            {{ begin|date_short }} – {{ end|date_short }}
+        </div>
+        <form method="get" action="{{ path('report_compact_week') }}" id="report-form" class="d-flex gap-2 align-items-center">
+            <input type="hidden" name="date" value="{{ begin|date('Y-m-d') }}">
+            <select name="rounding" class="form-select w-auto" title="{{ 'compact_week.rounding'|trans({}, 'reporting') }}">
+                <option value="none"{% if rounding == 'none' %} selected{% endif %}>
+                    {{ 'compact_week.rounding_none'|trans({}, 'reporting') }}
+                </option>
+                <optgroup label="{{ 'compact_week.group_nearest'|trans({}, 'reporting') }}">
+                    {% for minutes in [15, 30, 60] %}
+                        <option value="nearest_{{ minutes }}"{% if rounding == 'nearest_' ~ minutes %} selected{% endif %}>
+                            {{ ('compact_week.rounding_' ~ minutes)|trans({}, 'reporting') }}
+                        </option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="{{ 'compact_week.group_up'|trans({}, 'reporting') }}">
+                    {% for minutes in [15, 30, 60] %}
+                        <option value="up_{{ minutes }}"{% if rounding == 'up_' ~ minutes %} selected{% endif %}>
+                            {{ ('compact_week.rounding_' ~ minutes)|trans({}, 'reporting') }}
+                        </option>
+                    {% endfor %}
+                </optgroup>
+            </select>
+            <div class="btn-group" role="group" title="{{ 'compact_week.format'|trans({}, 'reporting') }}">
+                <input type="radio" class="btn-check" name="decimal" value="1" id="cw-format-decimal" autocomplete="off"{% if decimal %} checked{% endif %}>
+                <label class="btn" for="cw-format-decimal">{{ 'compact_week.decimal'|trans({}, 'reporting') }}</label>
+                <input type="radio" class="btn-check" name="decimal" value="0" id="cw-format-time" autocomplete="off"{% if not decimal %} checked{% endif %}>
+                <label class="btn" for="cw-format-time">h:mm</label>
+            </div>
+        </form>
+    </div>
+
+    {% embed '@theme/embeds/card.html.twig' with {report_content: block('report_content'), box_id: 'compact-week-box', fullsize: true} only %}
+        {% block box_body_class %}compact-week-box table-responsive m-0{% endblock %}
+        {% block box_body %}
+            {{ report_content|raw }}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block report_content %}
+    <table class="table table-hover dataTable">
+        <thead>
+            <tr>
+                <th>{{ 'customer'|trans }} – {{ 'project'|trans }}</th>
+                {% for day in days %}
+                    <th class="text-center text-nowrap{% if day is weekend %} weekend{% endif %}{% if day is today %} today{% endif %}">
+                        {{ day|date_weekday }}
+                    </th>
+                {% endfor %}
+                <th class="text-center">{{ 'stats.durationTotal'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if rows is empty %}
+            <tr>
+                <td colspan="{{ 2 + days|length }}" class="text-center text-muted">{{ 'error.no_entries_found'|trans }}</td>
+            </tr>
+        {% endif %}
+        {% for row in rows %}
+            <tr>
+                <td class="text-nowrap">
+                    <a href="{{ widgets.search_filter('timesheet', {'begin': begin, 'end': end, 'project': row.project.id}) }}">
+                        {{ row.project.customer.name }} – {{ row.project.name }}
+                    </a>
+                </td>
+                {% for dateKey, day in days %}
+                    {% set seconds = row.durations[dateKey] %}
+                    <td class="text-center{% if day is weekend %} weekend{% endif %}{% if day is today %} today{% endif %}">
+                        {% if seconds > 0 %}
+                            <a href="{{ widgets.search_filter('timesheet', {'begin': day, 'end': day, 'project': row.project.id}) }}">{{ seconds|duration(decimal) }}</a>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                <td class="text-center fw-bold">
+                    <a href="{{ widgets.search_filter('timesheet', {'begin': begin, 'end': end, 'project': row.project.id}) }}">{{ row.total|duration(decimal) }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        {% if rows is not empty %}
+        <tfoot>
+            <tr class="summary">
+                <td>{{ 'stats.durationTotal'|trans }}</td>
+                {% for dateKey, day in days %}
+                    <td class="text-center{% if day is weekend %} weekend{% endif %}{% if day is today %} today{% endif %}">
+                        {% if dayTotals[dateKey] > 0 %}
+                            <a href="{{ widgets.search_filter('timesheet', {'begin': day, 'end': day}) }}">{{ dayTotals[dateKey]|duration(decimal) }}</a>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                <td class="text-center fw-bold">
+                    <a href="{{ widgets.search_filter('timesheet', {'begin': begin, 'end': end}) }}">{{ grandTotal|duration(decimal) }}</a>
+                </td>
+            </tr>
+        </tfoot>
+        {% endif %}
+    </table>
+{% endblock %}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="reporting.en.xlf">
+    <body>
+      <trans-unit id="cw-1" resname="report_compact_week">
+        <source>report_compact_week</source>
+        <target>Compact week (customer – project)</target>
+      </trans-unit>
+      <trans-unit id="cw-2" resname="compact_week.this_week">
+        <source>compact_week.this_week</source>
+        <target>This week</target>
+      </trans-unit>
+      <trans-unit id="cw-3" resname="compact_week.decimal">
+        <source>compact_week.decimal</source>
+        <target>Decimal</target>
+      </trans-unit>
+      <trans-unit id="cw-4" resname="compact_week.rounding">
+        <source>compact_week.rounding</source>
+        <target>Rounding</target>
+      </trans-unit>
+      <trans-unit id="cw-5" resname="compact_week.rounding_none">
+        <source>compact_week.rounding_none</source>
+        <target>No rounding</target>
+      </trans-unit>
+      <trans-unit id="cw-6" resname="compact_week.rounding_15">
+        <source>compact_week.rounding_15</source>
+        <target>Quarter hour</target>
+      </trans-unit>
+      <trans-unit id="cw-7" resname="compact_week.rounding_30">
+        <source>compact_week.rounding_30</source>
+        <target>Half hour</target>
+      </trans-unit>
+      <trans-unit id="cw-8" resname="compact_week.rounding_60">
+        <source>compact_week.rounding_60</source>
+        <target>Full hour</target>
+      </trans-unit>
+      <trans-unit id="cw-9" resname="compact_week.group_nearest">
+        <source>compact_week.group_nearest</source>
+        <target>Nearest</target>
+      </trans-unit>
+      <trans-unit id="cw-10" resname="compact_week.group_up">
+        <source>compact_week.group_up</source>
+        <target>Round up</target>
+      </trans-unit>
+      <trans-unit id="cw-11" resname="compact_week.format">
+        <source>compact_week.format</source>
+        <target>Display format</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

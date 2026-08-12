@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    KimaiPlugin\CompactWeekBundle\:
+        resource: '../../*'
+        exclude:
+            - '../../Resources/'
+
+    KimaiPlugin\CompactWeekBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
